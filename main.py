@@ -1,11 +1,34 @@
 import pygame as pg
 from gui.real import base
 from assets.color import *
+from assets.button import intro_btn
 
 def title(screen):
-    font = font = pg.font.SysFont('Montserrat', 130, bold=True)
-    name_text = font.render("8 Puzzle", True, '#277E31')
-    screen.blit(name_text, (120, 50))
+    # font = font = pg.font.SysFont('Montserrat', 130, bold=True)
+    # name_text = font.render("8 Puzzle", True, cream)
+    # screen.blit(name_text, (300, 50))
+    text = "8 Puzzle"
+    font_size = 130
+    font = pg.font.SysFont('Montserrat', font_size, bold=True)
+
+    main_color = baby_blue  
+    glow_color = cream 
+
+    text_surface = font.render(text, True, main_color)
+
+    for offset in range(1, 6):
+        glow_surface = font.render(text, True, glow_color)
+        glow_surface.set_alpha(30)  
+        screen.blit(glow_surface, (300 - offset, 50 - offset))
+        screen.blit(glow_surface, (300 + offset, 50 + offset))
+        screen.blit(glow_surface, (300 - offset, 50 + offset))
+        screen.blit(glow_surface, (300 + offset, 50 - offset))
+
+    shadow_surface = font.render(text, True, (0, 0, 0))
+    shadow_surface.set_alpha(80)
+    screen.blit(shadow_surface, (303, 53))
+
+    screen.blit(text_surface, (300, 50))
 
 
 def load_music():
@@ -14,16 +37,30 @@ def load_music():
     pg.mixer.music.play(loops=-1)
 
 def intro_panel(screen, width, height=None):
-    panel = pg.Surface((width - 2 * 150, 270), pg.SRCALPHA)
+    panel = pg.Surface((width - 2 * 330, 290), pg.SRCALPHA)
     pg.draw.rect(panel, color_algo_panel, (0,0, panel.get_width(), panel.get_height()), border_radius = 50)
-    screen.blit(panel, (150, 270))
+    
+    font = pg.font.SysFont('Montserrat', 28, bold=True)
+    info_lines = [
+        "ID: 23110312",
+        "Name: Lê Thị Thanh Tâm",
+        "ARIN330585_04",
+        "Mentor: Phan Thị Huyền Trang"
+    ]
+    
+    for i, line in enumerate(info_lines):
+        text = font.render(line, True, '#000000')
+        screen.blit(text, (100, 280 + i * 50))
+
+    
+    screen.blit(panel, (600, 230))
 
 def intro():
     pg.init()
      
     load_music()
     
-    width = 800
+    width = 1200
     height = 600
     screen = pg.display.set_mode((width, height), pg.RESIZABLE)
     pg.display.set_caption("8-Puzzle")
@@ -33,8 +70,8 @@ def intro():
     bg = pg.transform.scale(bg, (width, height))
     
 
-    blur = pg.Surface((width, height), pg.SRCALPHA)
-    blur.fill((255, 255, 255, 160))  
+    # blur = pg.Surface((width, height), pg.SRCALPHA)
+    # blur.fill((255, 255, 255, 160))  
 
     belief_screen = False   
     running = True
@@ -50,13 +87,16 @@ def intro():
                 bg = pg.transform.scale(bg, (width, height))
 
         blur = pg.Surface((width, height), pg.SRCALPHA)
-        blur.fill((255, 255, 255, 160))  
+        # blur.fill((255, 255, 255, 160))  
         screen.blit(bg, (0, 0))
-        screen.blit(blur, (0, 0)) 
+        # screen.blit(blur, (0, 0)) 
         title(screen)
+
+            
         intro_panel(screen,width)
+        intro_btn(screen)
         pg.display.flip()
 
     pg.quit()
 
-base()
+intro()

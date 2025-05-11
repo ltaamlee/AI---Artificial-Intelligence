@@ -33,12 +33,14 @@ def base():
     bg = pg.image.load(r'assets\LOCK.png').convert()
     bg = pg.transform.scale(bg, (width, height))
 
-    ipuzzle = Puzzle(screen, x_offset=100, title="Initial State")
-    gpuzzle = Puzzle(screen, x_offset=500, title="Goal State")
+    ipuzzle = Puzzle(screen, x_offset = 100, title = "Initial State")
+    gpuzzle = Puzzle(screen, x_offset = 700, title = "Goal State")
+    x_middle = (ipuzzle.x_offset + gpuzzle.x_offset) // 2
+    cpuzzle = Puzzle(screen, x_offset = x_middle, title = "Current State")
 
     ipuzzle_nums = set()
     gpuzzle_nums = set()
-    mode = "input"  # or "done"
+    mode = "input"  
 
     running = True
     while running:
@@ -60,6 +62,7 @@ def base():
                     gpuzzle.handle_click(x, y, gpuzzle_nums)
                 if len(ipuzzle_nums) == 9 and len(gpuzzle_nums) == 9:
                     mode = "done"
+                    cpuzzle.state = ipuzzle.state.copy()
                     print("Initial State:", ipuzzle.state)
                     print("Goal State:", gpuzzle.state)
 
@@ -67,11 +70,10 @@ def base():
         draw_name(screen)
         algo_panel(screen, width)
         algo_btn(screen)
-        env_btn(screen)
-
+        
         ipuzzle.draw()
         gpuzzle.draw()
-
+        cpuzzle.draw()
         pg.display.flip()
 
     pg.quit()

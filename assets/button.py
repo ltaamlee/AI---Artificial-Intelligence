@@ -11,11 +11,11 @@ class Intro_Button:
         
         # surface btn
         self.top_rect = pg.Rect(pos, (width, height))
-        self.top_color = ALGO_TOP_COLOR
+        self.top_color = beige
         
         # text 
         self.text = text
-        self.text_surf = pg.font.SysFont('Montserrat', 25).render(text, True, ALGO_TEXT_COLOR)
+        self.text_surf = pg.font.SysFont('Montserrat', 25, bold=True).render(text, True, ALGO_TEXT_COLOR)
         self.text_rect = self.text_surf.get_rect(center=self.top_rect.center)
         
         # shadow btn
@@ -39,8 +39,8 @@ class Intro_Button:
     def check_click(self, screen):
         mouse_pos = pg.mouse.get_pos()
         if self.top_rect.collidepoint(mouse_pos):
-            self.top_color = ALGO_TOP_COLOR_CLICK
-            self.text_surf = pg.font.Font(None, 25).render(self.text, True, ALGO_TEXT_CLICK)
+            self.top_color = tan
+            self.text_surf = pg.font.SysFont('Montserrat', 25, bold=True).render(self.text, True, white)
 
             if pg.mouse.get_pressed()[0]:
                 self.pressed = True
@@ -51,9 +51,17 @@ class Intro_Button:
                     print('click')
                     self.pressed = False
         else:
-            self.top_color = ALGO_TOP_COLOR
-            self.text_surf = pg.font.Font(None, 25).render(self.text, True, ALGO_TEXT_COLOR)
+            self.top_color = cream
+            self.text_surf = pg.font.SysFont('Montserrat', 25).render(self.text, True, ebony)
             self.dynamic_shadow = self.shadow
+
+def intro_btn(screen):
+    btn_real_env = Intro_Button('Real Environment', 280, 50, (720, 280), 2)
+    btn_complex_env = Intro_Button('Complex Environment', 320, 50, (700, 350), 2)
+    btn_csp = Intro_Button('Constraint Satisfaction Problem', 500, 50, (620, 420), 2)
+    
+    btn_real_env.check_click(screen), btn_complex_env.check_click(screen), btn_csp.check_click(screen)
+    btn_real_env.draw(screen), btn_complex_env.draw(screen), btn_csp.draw(screen)
 
 #====================================================================================#
 class Algo_Button:
@@ -224,7 +232,6 @@ class Env_Button:
         else:
             self.dynamic_shadow = self.shadow
         
-     
 def env_btn(screen):
     btn_real = Env_Button('Real', 80, 40, (1300, 780), 2)
     btn_belief = Env_Button('Belief', 80, 40, (1400, 780), 2)
