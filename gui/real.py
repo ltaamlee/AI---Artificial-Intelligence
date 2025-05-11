@@ -2,6 +2,7 @@ import pygame as pg
 import pygame_gui as pgui
 from assets.button import algo_btn, env_btn
 from assets.color import *
+from assets.puzzle import Puzzle
 #====================================================================================#
 
 def load_music():
@@ -22,21 +23,22 @@ def algo_panel(screen, width, height=None):
 #====================================================================================#
 def base():
     pg.init()
-     
     load_music()
-    
+
     width = pg.display.Info().current_w
     height = pg.display.Info().current_h
     screen = pg.display.set_mode((width, height), pg.RESIZABLE)
     pg.display.set_caption("8-Puzzle")
 
-    # Load and scale image
     bg = pg.image.load(r'assets\LOCK.png').convert()
     bg = pg.transform.scale(bg, (width, height))
-    
 
-    # blur = pg.Surface((width, height), pg.SRCALPHA)
-    # blur.fill((255, 255, 255, 160))  
+    ipuzzle = Puzzle(screen, x_offset=100, title="Initial State")
+    gpuzzle = Puzzle(screen, x_offset=500, title="Goal State")
+
+    ipuzzle_nums = set()
+    gpuzzle_nums = set()
+    mode = "input"  # or "done"
 
     running = True
     while running:
@@ -44,19 +46,32 @@ def base():
             if event.type == pg.QUIT or (
                 event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 running = False
-                
+
             if event.type == pg.VIDEORESIZE:
                 width, height = event.w, event.h
                 screen = pg.display.set_mode((width, height), pg.RESIZABLE)
                 bg = pg.transform.scale(bg, (width, height))
+
+            if event.type == pg.MOUSEBUTTONDOWN and mode == "input":
+                x, y = pg.mouse.get_pos()
+                if len(ipuzzle_nums) < 9:
+                    ipuzzle.handle_click(x, y, ipuzzle_nums)
+                elif len(gpuzzle_nums) < 9:
+                    gpuzzle.handle_click(x, y, gpuzzle_nums)
+                if len(ipuzzle_nums) == 9 and len(gpuzzle_nums) == 9:
+                    mode = "done"
+                    print("Initial State:", ipuzzle.state)
+                    print("Goal State:", gpuzzle.state)
 
         screen.blit(bg, (0, 0))
         draw_name(screen)
         algo_panel(screen, width)
         algo_btn(screen)
         env_btn(screen)
-        # screen.blit(blur, (0, 0))  
+
+        ipuzzle.draw()
+        gpuzzle.draw()
+
         pg.display.flip()
 
     pg.quit()
-

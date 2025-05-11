@@ -1,5 +1,5 @@
 import pygame as pg
-from gui.dashboard import base
+from gui.real import base
 from assets.color import *
 
 def title(screen):
@@ -59,4 +59,4 @@ def intro():
 
     pg.quit()
 
-intro()
+base()
