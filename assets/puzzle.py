@@ -1,10 +1,11 @@
 import pygame as pg
 from assets.color import *
+import random
 
 cell = 80
 
 class Puzzle:
-    def __init__(self, screen, x_offset, title=""):
+    def __init__(self, screen, x_offset, title = None):
         self.screen = screen
         self.x_offset = x_offset
         self.title = title
@@ -13,30 +14,31 @@ class Puzzle:
         self.title_font = pg.font.SysFont('Montserrat', 30, bold=True)
 
     def draw(self, highlight=None):
-        outer_rect = pg.Rect(self.x_offset - 10, 70, cell * 3 + 20, cell * 3 + 20)
+        base_y = 60  
+
+        outer_rect = pg.Rect(self.x_offset - 10, base_y - 10, cell * 3 + 20, cell * 3 + 20)
         pg.draw.rect(self.screen, white, outer_rect)
 
         inner_border = 4
         inner_rect = pg.Rect(
-            self.x_offset - inner_border, 
-            70 + (10 - inner_border), 
-            cell * 3 + inner_border * 2, 
+            self.x_offset - inner_border,
+            base_y - inner_border,
+            cell * 3 + inner_border * 2,
             cell * 3 + inner_border * 2
         )
         pg.draw.rect(self.screen, blue, inner_rect, 2)
 
         if self.title:
             title_text = self.title_font.render(self.title, True, white)
-            title_rect = title_text.get_rect(center=(self.x_offset + (cell * 3) // 2, 40))
+            title_rect = title_text.get_rect(center=(self.x_offset + (cell * 3) // 2, base_y - 30))
             self.screen.blit(title_text, title_rect)
 
         for i in range(3):
             for j in range(3):
                 x = j * cell + self.x_offset
-                y = i * cell + 80
+                y = i * cell + base_y
                 rect = pg.Rect(x, y, cell, cell)
-                
-                # Cross
+
                 pg.draw.rect(self.screen, beige, rect)
                 pg.draw.rect(self.screen, white, rect, 4)
 
@@ -48,6 +50,7 @@ class Puzzle:
                     text = self.font.render(str(value), True, ebony)
                     text_rect = text.get_rect(center=(x + cell // 2, y + cell // 2))
                     self.screen.blit(text, text_rect)
+
 
     def handle_click(self, x, y, puzzle_nums):
         if self.x_offset <= x < self.x_offset + cell * 3 and 80 <= y < 80 + cell * 3:
@@ -63,7 +66,6 @@ class Puzzle:
                     puzzle_nums.add(num)
                     return True 
         return False
-
 
 def input_states(ipuzzle, gpuzzle):
     ipuzzle_nums = set()
@@ -92,6 +94,73 @@ def input_states(ipuzzle, gpuzzle):
                     running = False
 
     return ipuzzle.state, gpuzzle.state
+
+class BPuzzle:
+    def __init__(self, screen, x_offset, y_offset = None, title = None):
+        self.screen = screen
+        self.x_offset = x_offset
+        self.title = title
+        self.state = self.generate_random_state()
+        self.font = pg.font.SysFont('Montserrat', 30, bold=True)
+        self.title_font = pg.font.SysFont('Montserrat', 30, bold=True)  
+        
+        self.y_offset = y_offset if y_offset is not None else 70
+    
+    def generate_random_state(self):
+        numbers = list(range(1, 9)) + [0] 
+        random.shuffle(numbers)
+        return [numbers[i:i+3] for i in range(0, len(numbers), 3)]
+    
+    def draw(self, highlight=None):
+        outer_rect = pg.Rect(self.x_offset - 10, self.y_offset, cell * 3 + 20, cell * 3 + 20)
+        pg.draw.rect(self.screen, white, outer_rect)
+
+        inner_border = 4
+        inner_rect = pg.Rect(
+            self.x_offset - inner_border, 
+            self.y_offset + (10 - inner_border), 
+            cell * 3 + inner_border * 2, 
+            cell * 3 + inner_border * 2
+        )
+        pg.draw.rect(self.screen, blue, inner_rect, 2)
+
+        if self.title:
+            title_text = self.title_font.render(self.title, True, white)
+            title_rect = title_text.get_rect(center=(self.x_offset + (cell * 3) // 2, 30))
+            self.screen.blit(title_text, title_rect)
+
+        for i in range(3):
+            for j in range(3):
+                x = j * cell + self.x_offset
+                y = i * cell + 10 + self.y_offset
+                rect = pg.Rect(x, y, cell, cell)
+                
+                pg.draw.rect(self.screen, beige, rect)
+                pg.draw.rect(self.screen, white, rect, 4)
+
+                if highlight and highlight == (i, j):
+                    pg.draw.rect(self.screen, blue, rect, 6)
+
+                value = self.state[i][j]
+                if value != 0: 
+                    text = self.font.render(str(value), True, ebony)
+                    text_rect = text.get_rect(center=(x + cell // 2, y + cell // 2))
+                    self.screen.blit(text, text_rect)
+                    
+    def handle_click(self, x, y, puzzle_nums):
+        if self.x_offset <= x < self.x_offset + cell * 3 and 80 <= y < 80 + cell * 3:
+            row = (y - 80) // cell
+            col = (x - self.x_offset) // cell
+
+            if self.state[row][col] is None:
+                num = len(puzzle_nums) + 1
+                if num == 9:
+                    num = 0
+                if num not in puzzle_nums:
+                    self.state[row][col] = num
+                    puzzle_nums.add(num)
+                    return True 
+        return False
 
 
 # pg.init()

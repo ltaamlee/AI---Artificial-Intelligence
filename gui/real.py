@@ -1,6 +1,6 @@
 import pygame as pg
 import pygame_gui as pgui
-from assets.button import algo_btn, env_btn
+from assets.button import uninformed_btn, informed_btn, local_btn, complex_btn, csp_btn, rl_btn
 from assets.color import *
 from assets.puzzle import Puzzle
 #====================================================================================#
@@ -12,14 +12,31 @@ def load_music():
 
 def draw_name(screen):
     font = pg.font.Font(None, 30)
-    name_text = font.render("23110312 - Le Thi Thanh Tam", True, '#000000')
+    name_text = font.render("23110312 - Le Thi Thanh Tam", True, black)
     screen.blit(name_text, (1000, 10))
-
-def algo_panel(screen, width, height=None):
-    panel = pg.Surface((width - 2 * 250, 270), pg.SRCALPHA)
-    pg.draw.rect(panel, color_algo_panel, (0,0, panel.get_width(), panel.get_height()), border_radius = 50)
-    screen.blit(panel, (250, 570))
     
+def algo_panel(screen, width, height=None):
+    panel_x = 250
+    panel_y = 560
+    panel_width = width - 2 * 250
+    panel_height = 270
+
+    panel = pg.Surface((panel_width, panel_height), pg.SRCALPHA)
+    pg.draw.rect(panel, color_algo_panel, (0, 0, panel_width, panel_height), border_radius=50)
+    screen.blit(panel, (panel_x, panel_y))
+
+    return panel_x, panel_y, panel_width, panel_height
+
+def algo_btn(screen, width):
+    panel_x, panel_y, panel_width, panel_height = algo_panel(screen, width)
+
+    uninformed_btn(screen, panel_x + 30, panel_y + 20)
+    informed_btn(screen, panel_x + 160, panel_y + 20)
+    local_btn(screen, panel_x + 290, panel_y + 20)
+    complex_btn(screen, panel_x + 520, panel_y + 20)
+    csp_btn(screen, panel_x + 650, panel_y + 20)
+    rl_btn(screen, panel_x + 780, panel_y + 20)
+
 #====================================================================================#
 def base():
     pg.init()
@@ -69,7 +86,7 @@ def base():
         screen.blit(bg, (0, 0))
         draw_name(screen)
         algo_panel(screen, width)
-        algo_btn(screen)
+        algo_btn(screen, width)
         
         ipuzzle.draw()
         gpuzzle.draw()

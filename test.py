@@ -1,2 +1,2 @@
-from gui.real import base
+from gui.belief import base
 base()

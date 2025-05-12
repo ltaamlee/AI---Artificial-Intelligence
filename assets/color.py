@@ -8,6 +8,7 @@ tan = '#705446'
 beige = '#e1c391'
 cream = '#fdf4e3'
 ebony = '#3c3431'
+yellow ='#ECF87F'
 
 color_algo_panel = (38, 89, 63, 128)
 

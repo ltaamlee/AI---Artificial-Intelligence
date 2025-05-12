@@ -1,7 +1,6 @@
 import pygame as pg
-from gui.real import base
 from assets.color import *
-from assets.button import intro_btn
+from assets.button import Intro_Button
 
 def title(screen):
     # font = font = pg.font.SysFont('Montserrat', 130, bold=True)
@@ -52,7 +51,6 @@ def intro_panel(screen, width, height=None):
         text = font.render(line, True, '#000000')
         screen.blit(text, (100, 280 + i * 50))
 
-    
     screen.blit(panel, (600, 230))
 
 def intro():
@@ -73,6 +71,18 @@ def intro():
     # blur = pg.Surface((width, height), pg.SRCALPHA)
     # blur.fill((255, 255, 255, 160))  
 
+    btn_real_env = Intro_Button('Real Environment', 280, 50, (720, 280), 2)
+    btn_complex_env = Intro_Button('Complex Environment', 320, 50, (700, 350), 2)
+    btn_csp = Intro_Button('Constraint Satisfaction Problem', 500, 50, (620, 420), 2)
+    
+
+        # elif btn_complex_env.check_click(None):
+        #     from gui.complex import base
+        #     base.main()
+
+        # elif btn_csp.check_click(None):
+        #     from gui.csp import base
+        #     base.main()
     belief_screen = False   
     running = True
     while running:
@@ -91,12 +101,21 @@ def intro():
         screen.blit(bg, (0, 0))
         # screen.blit(blur, (0, 0)) 
         title(screen)
-
-            
         intro_panel(screen,width)
-        intro_btn(screen)
+        
+        btn_real_env.draw(screen)
+        btn_complex_env.draw(screen)
+        btn_csp.draw(screen)
+        
+        if btn_real_env.check_click(None):
+            from gui.real import base
+            base()
+        elif btn_complex_env.check_click(None):
+            from gui.belief import base
+            base()
+    
         pg.display.flip()
-
     pg.quit()
-
+    
 intro()
+
