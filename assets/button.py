@@ -228,7 +228,7 @@ def env_btn(screen):
     
 #====================================================================================#
 class Control_Button:
-    def __init__(self, text, width, height, pos, shadow):
+    def __init__(self, icon_path, width, height, pos, shadow):
         self.pressed = False
         self.shadow = shadow
         self.dynamic_shadow = shadow
@@ -238,10 +238,10 @@ class Control_Button:
         self.top_rect = pg.Rect(pos, (width, height))
         self.top_color = yellow
         
-        # text 
-        self.text = text
-        self.text_surf = pg.font.SysFont('Montserrat', 25, bold=True).render(text, True, red)
-        self.text_rect = self.text_surf.get_rect(center=self.top_rect.center)
+        # icon 
+        self.icon = pg.image.load(icon_path).convert_alpha()
+        self.icon = pg.transform.scale(self.icon, (25, 25))  
+        self.icon_rect = self.icon.get_rect(center=self.top_rect.center)
         
         # shadow btn
         self.bottom_rect = pg.Rect(pos, (width, shadow))
@@ -249,7 +249,7 @@ class Control_Button:
 
     def draw(self,screen):
         self.top_rect.y = self.y_pos - self.dynamic_shadow
-        self.text_rect.center = self.top_rect.center
+        self.icon_rect = self.icon.get_rect(center=self.top_rect.center)
         
         # shadow position
         shadow_offset = 5
@@ -259,13 +259,12 @@ class Control_Button:
         # draw shadow and button
         pg.draw.rect(screen, self.bottom_color, self.bottom_rect, border_radius = 50)
         pg.draw.rect(screen, self.top_color, self.top_rect, border_radius = 50)
-        screen.blit(self.text_surf, self.text_rect)
+        screen.blit(self.icon, self.icon_rect)
 
     def check_click(self, screen):
         mouse_pos = pg.mouse.get_pos()
         if self.top_rect.collidepoint(mouse_pos):
-            self.top_color = beige
-            self.text_surf = pg.font.SysFont('Montserrat', 25, bold=True).render(self.text, True, red)
+            self.top_color = yellow
 
             if pg.mouse.get_pressed()[0]:
                 self.pressed = True
@@ -277,5 +276,16 @@ class Control_Button:
                     return True
         else:
             self.top_color = yellow
-            self.text_surf = pg.font.SysFont('Montserrat', 25).render(self.text, True, red)
             self.dynamic_shadow = self.shadow
+
+def ctrl_btn(screen, base_x, base_y):
+    buttons = [
+        Control_Button('./assets/prev.png', 50, 50, (base_x, 300), 2),
+        Control_Button('./assets/play.png', 50, 50, (base_x + 80, 300), 2),
+        Control_Button('./assets/pause.png', 50, 50, (base_x + 160, 300), 2),
+        Control_Button('./assets/next.png', 50, 50, (base_x + 240, 300), 2),
+        Control_Button('./assets/restart.png', 50, 50, (base_x + 320, 300), 2),
+    ]
+    for btn in buttons:
+        btn.check_click(screen)
+        btn.draw(screen)

@@ -36,7 +36,7 @@ def load_music():
     pg.mixer.music.play(loops=-1)
 
 def intro_panel(screen, width, height=None):
-    panel = pg.Surface((width - 2 * 330, 290), pg.SRCALPHA)
+    panel = pg.Surface((width - 2 * 330, 310), pg.SRCALPHA)
     pg.draw.rect(panel, color_algo_panel, (0,0, panel.get_width(), panel.get_height()), border_radius = 50)
     
     font = pg.font.SysFont('Montserrat', 28, bold=True)
@@ -51,7 +51,7 @@ def intro_panel(screen, width, height=None):
         text = font.render(line, True, '#000000')
         screen.blit(text, (100, 280 + i * 50))
 
-    screen.blit(panel, (600, 230))
+    screen.blit(panel, (600, 200))
 
 def intro():
     pg.init()
@@ -71,9 +71,10 @@ def intro():
     # blur = pg.Surface((width, height), pg.SRCALPHA)
     # blur.fill((255, 255, 255, 160))  
 
-    btn_real_env = Intro_Button('Real Environment', 280, 50, (720, 280), 2)
-    btn_complex_env = Intro_Button('Complex Environment', 320, 50, (700, 350), 2)
-    btn_csp = Intro_Button('Constraint Satisfaction Problem', 500, 50, (620, 420), 2)
+    btn_real_env = Intro_Button('Real Environment', 280, 50, (720, 230), 2)
+    btn_complex_env = Intro_Button('Complex Environment', 320, 50, (700, 300), 2)
+    btn_csp = Intro_Button('Constraint Satisfaction Problem', 500, 50, (620, 370), 2)
+    btn_rl = Intro_Button('Reinforcement Learning', 460, 50, (650, 440), 2)
     
 
         # elif btn_complex_env.check_click(None):
@@ -106,12 +107,16 @@ def intro():
         btn_real_env.draw(screen)
         btn_complex_env.draw(screen)
         btn_csp.draw(screen)
+        btn_rl.draw(screen)
         
         if btn_real_env.check_click(None):
             from gui.real import base
             base()
         elif btn_complex_env.check_click(None):
             from gui.belief import base
+            base()
+        elif btn_csp.check_click(None):
+            from gui.csp import base
             base()
     
         pg.display.flip()

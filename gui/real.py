@@ -1,6 +1,6 @@
 import pygame as pg
 import pygame_gui as pgui
-from assets.button import uninformed_btn, informed_btn, local_btn, complex_btn, csp_btn, rl_btn
+from assets.button import uninformed_btn, informed_btn, local_btn, complex_btn, csp_btn, rl_btn, ctrl_btn
 from assets.color import *
 from assets.puzzle import Puzzle
 #====================================================================================#
@@ -15,10 +15,12 @@ def draw_name(screen):
     name_text = font.render("23110312 - Le Thi Thanh Tam", True, black)
     screen.blit(name_text, (1000, 10))
     
+#====================================================================================#
+
 def algo_panel(screen, width, height=None):
     panel_x = 250
     panel_y = 560
-    panel_width = width - 2 * 250
+    panel_width = width - 2 * 270
     panel_height = 270
 
     panel = pg.Surface((panel_width, panel_height), pg.SRCALPHA)
@@ -38,6 +40,24 @@ def algo_btn(screen, width):
     rl_btn(screen, panel_x + 780, panel_y + 20)
 
 #====================================================================================#
+def control_panel(screen, width, hegiht=None):
+    panel_x = 1000
+    panel_y = 50
+    panel_width = width - 1050
+    panel_height = 280
+
+    panel = pg.Surface((panel_width, panel_height), pg.SRCALPHA)
+    pg.draw.rect(panel, color_algo_panel, (0, 0, panel_width, panel_height), border_radius=50)
+    screen.blit(panel, (panel_x, panel_y))
+
+    return panel_x, panel_y, panel_width, panel_height
+
+def control_btn(screen, width):
+    panel_x, panel_y, panel_width, panel_height = control_panel(screen, width)
+    ctrl_btn(screen, panel_x + 50, panel_y + 10)
+    
+#====================================================================================#
+
 def base():
     pg.init()
     load_music()
@@ -50,8 +70,8 @@ def base():
     bg = pg.image.load(r'assets\LOCK.png').convert()
     bg = pg.transform.scale(bg, (width, height))
 
-    ipuzzle = Puzzle(screen, x_offset = 100, title = "Initial State")
-    gpuzzle = Puzzle(screen, x_offset = 700, title = "Goal State")
+    ipuzzle = Puzzle(screen, x_offset = 80, title = "Initial State")
+    gpuzzle = Puzzle(screen, x_offset = 680, title = "Goal State")
     x_middle = (ipuzzle.x_offset + gpuzzle.x_offset) // 2
     cpuzzle = Puzzle(screen, x_offset = x_middle, title = "Current State")
 
@@ -88,6 +108,9 @@ def base():
         algo_panel(screen, width)
         algo_btn(screen, width)
         
+        
+        control_panel(screen, width)
+        control_btn(screen, width)
         ipuzzle.draw()
         gpuzzle.draw()
         cpuzzle.draw()
