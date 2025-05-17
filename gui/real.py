@@ -3,6 +3,7 @@ import pygame_gui as pgui
 from assets.button import uninformed_btn, informed_btn, local_btn, complex_btn, csp_btn, rl_btn, ctrl_btn
 from assets.color import *
 from assets.puzzle import Puzzle
+from assets.path import PathVisualizer
 #====================================================================================#
 
 def load_music():
@@ -19,7 +20,7 @@ def draw_name(screen):
 
 def algo_panel(screen, width, height=None):
     panel_x = 250
-    panel_y = 560
+    panel_y = 540
     panel_width = width - 2 * 270
     panel_height = 270
 
@@ -67,7 +68,7 @@ def base():
     screen = pg.display.set_mode((width, height), pg.RESIZABLE)
     pg.display.set_caption("8-Puzzle")
 
-    bg = pg.image.load(r'assets\LOCK.png').convert()
+    bg = pg.image.load(r'assets\beach5.jpg').convert()
     bg = pg.transform.scale(bg, (width, height))
 
     ipuzzle = Puzzle(screen, x_offset = 80, title = "Initial State")
@@ -78,6 +79,23 @@ def base():
     ipuzzle_nums = set()
     gpuzzle_nums = set()
     mode = "input"  
+    solution = [
+        [
+            [1, 2, 3],
+            [4, 5, 6],
+            [0, 7, 8]
+        ],
+        [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 0, 8]
+        ],
+        [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 0]
+        ]
+    ]
 
     running = True
     while running:
@@ -114,6 +132,13 @@ def base():
         ipuzzle.draw()
         gpuzzle.draw()
         cpuzzle.draw()
+        
+        # Khởi tạo
+        path_visualizer = PathVisualizer(screen, width, pg.font.SysFont('Monserrat', 24))
+
+        # Trong vòng lặp game hoặc hàm render
+        path_visualizer.draw(solution, 1, True)
+
         pg.display.flip()
 
     pg.quit()

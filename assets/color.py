@@ -12,16 +12,12 @@ yellow ='#ECF87F'
 
 color_algo_panel = (38, 89, 63, 128)
 
-HEADING1_TEXT_COLOR ='#277e31'
-HEADING2_TEXT_COLOR = '#cccccc'
+heading1 ='#277e31'
+heading2 = '#cccccc'
 
 
-ALGO_TOP_COLOR = '#d1e2c4'
+algo_color = '#d1e2c4'
 SHADOW = '#354b5e'
-ALGO_TEXT_COLOR = '#000000'
-ALGO_TEXT_CLICK = '#FFFFFF'
-ALGO_TOP_COLOR_CLICK = '#277e31'
-
-ENV_TOP_COLOR = '#ecf87f'
-ENV_TEXT_COLOR = '#ff0000'
-
+algo_text = '#000000'
+algo_tex_click = '#FFFFFF'
+algo_top_click = '#277e31'

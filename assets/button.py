@@ -15,7 +15,7 @@ class Intro_Button:
         
         # text 
         self.text = text
-        self.text_surf = pg.font.SysFont('Montserrat', 25, bold=True).render(text, True, ALGO_TEXT_COLOR)
+        self.text_surf = pg.font.SysFont('Montserrat', 25, bold=True).render(text, True, algo_text)
         self.text_rect = self.text_surf.get_rect(center=self.top_rect.center)
         
         # shadow btn
@@ -65,11 +65,11 @@ class Algo_Button:
         
         # surface btn
         self.top_rect = pg.Rect(pos, (width, height))
-        self.top_color = ALGO_TOP_COLOR
+        self.top_color = algo_color
         
         # text 
         self.text = text
-        self.text_surf = pg.font.SysFont('Montserrat', 25).render(text, True, ALGO_TEXT_COLOR)
+        self.text_surf = pg.font.SysFont('Montserrat', 25).render(text, True, algo_text)
         self.text_rect = self.text_surf.get_rect(center=self.top_rect.center)
         
         # shadow btn
@@ -93,8 +93,8 @@ class Algo_Button:
     def check_click(self, screen):
         mouse_pos = pg.mouse.get_pos()
         if self.top_rect.collidepoint(mouse_pos):
-            self.top_color = ALGO_TOP_COLOR_CLICK
-            self.text_surf = pg.font.Font(None, 25).render(self.text, True, ALGO_TEXT_CLICK)
+            self.top_color = algo_top_click
+            self.text_surf = pg.font.Font(None, 25).render(self.text, True, algo_tex_click)
 
             if pg.mouse.get_pressed()[0]:
                 self.pressed = True
@@ -105,8 +105,8 @@ class Algo_Button:
                     print('click')
                     self.pressed = False
         else:
-            self.top_color = ALGO_TOP_COLOR
-            self.text_surf = pg.font.Font(None, 25).render(self.text, True, ALGO_TEXT_COLOR)
+            self.top_color = algo_color
+            self.text_surf = pg.font.Font(None, 25).render(self.text, True, algo_text)
             self.dynamic_shadow = self.shadow
                        
 def uninformed_btn(screen, base_x, base_y):
@@ -175,11 +175,11 @@ class Env_Button:
         
         # surface btn
         self.top_rect = pg.Rect(pos, (width, height))
-        self.top_color = ENV_TOP_COLOR
+        self.top_color = yellow
         
         # text 
         self.text = text
-        self.text_surf = pg.font.Font(None, 25).render(text, True, ENV_TEXT_COLOR)
+        self.text_surf = pg.font.Font(None, 25).render(text, True, red)
         self.text_rect = self.text_surf.get_rect(center=self.top_rect.center)
         
         # shadow btn
@@ -203,8 +203,7 @@ class Env_Button:
     def check_click(self, screen):
         mouse_pos = pg.mouse.get_pos()
         if self.top_rect.collidepoint(mouse_pos):
-            self.top_color = ENV_TOP_COLOR
-            self.text_surf = pg.font.Font(None, 25).render(self.text, True, ENV_TEXT_COLOR)
+            self.top_color = yellow
 
             if pg.mouse.get_pressed()[0]:
                 self.pressed = True

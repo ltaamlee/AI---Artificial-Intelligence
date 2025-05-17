@@ -1,10 +1,10 @@
 import random
 import pygame as pg
 import pygame_gui as pgui
-from assets.button import uninformed_btn, informed_btn, local_btn, complex_btn, csp_btn, rl_btn, ctrl_btn
+from assets.button import uninformed_btn, informed_btn, local_btn, complex_btn, csp_btn, rl_btn, ctrl_btn, Intro_Button
 from assets.color import *
 from assets.puzzle import Puzzle, BPuzzle
-
+from assets.path import PathVisualizer
 #====================================================================================#
 
 def load_music():
@@ -19,7 +19,7 @@ def draw_name(screen):
 
 def algo_panel(screen, width, height=None):
     panel_x = 450
-    panel_y = 560
+    panel_y = 540
     panel_width = width - 2 * 270
     panel_height = 270
 
@@ -66,7 +66,7 @@ def base():
     screen = pg.display.set_mode((width, height), pg.RESIZABLE)
     pg.display.set_caption("8-Puzzle")
 
-    bg = pg.image.load(r'assets\LOCK.png').convert()
+    bg = pg.image.load(r'assets\beach4.jpg').convert()
     bg = pg.transform.scale(bg, (width, height))
 
     ipuzzle1 = BPuzzle(screen, 100, 50, "Initial State")
@@ -82,6 +82,25 @@ def base():
     mode = "input"
 
     random_button_rect = pg.Rect((width - 200, 10), (150, 50))  
+    solution = [
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+                [0, 7, 8]
+            ],
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 0, 8]
+            ],
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 0]
+            ]
+        ]
+    
+    back_button = Intro_Button("Quay lại", 150, 40, (width - 180, height - 70), 2)
 
     running = True
     while running:
@@ -134,6 +153,13 @@ def base():
         
         control_panel(screen, width)
         control_btn(screen, width)
+        back_button.draw(screen)
+
+        # Khởi tạo
+        path_visualizer = PathVisualizer(screen, width - 350, pg.font.SysFont('Montserrat', 24), pos_x=400, pos_y=400)
+
+        # Trong vòng lặp game hoặc hàm render
+        path_visualizer.draw(solution, 1, True)
         pg.display.flip()
 
     pg.quit()
