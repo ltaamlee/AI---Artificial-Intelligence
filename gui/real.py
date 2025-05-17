@@ -1,9 +1,11 @@
 import pygame as pg
 import pygame_gui as pgui
-from assets.button import uninformed_btn, informed_btn, local_btn, complex_btn, csp_btn, rl_btn, ctrl_btn
+from assets.button import uninformed_btn, informed_btn, local_btn, complex_btn, csp_btn, rl_btn, ctrl_btn, Intro_Button
 from assets.color import *
 from assets.puzzle import Puzzle
 from assets.path import PathVisualizer
+from algorithms import BFS, DFS
+
 #====================================================================================#
 
 def load_music():
@@ -15,7 +17,7 @@ def draw_name(screen):
     font = pg.font.Font(None, 30)
     name_text = font.render("23110312 - Le Thi Thanh Tam", True, black)
     screen.blit(name_text, (1000, 10))
-    
+
 #====================================================================================#
 
 def algo_panel(screen, width, height=None):
@@ -31,7 +33,7 @@ def algo_panel(screen, width, height=None):
     return panel_x, panel_y, panel_width, panel_height
 
 def algo_btn(screen, width):
-    panel_x, panel_y, panel_width, panel_height = algo_panel(screen, width)
+    panel_x, panel_y, _, _ = algo_panel(screen, width)
 
     uninformed_btn(screen, panel_x + 30, panel_y + 20)
     informed_btn(screen, panel_x + 160, panel_y + 20)
@@ -41,7 +43,8 @@ def algo_btn(screen, width):
     rl_btn(screen, panel_x + 780, panel_y + 20)
 
 #====================================================================================#
-def control_panel(screen, width, hegiht=None):
+
+def control_panel(screen, width, height=None):
     panel_x = 1000
     panel_y = 50
     panel_width = width - 1050
@@ -54,9 +57,9 @@ def control_panel(screen, width, hegiht=None):
     return panel_x, panel_y, panel_width, panel_height
 
 def control_btn(screen, width):
-    panel_x, panel_y, panel_width, panel_height = control_panel(screen, width)
+    panel_x, panel_y, _, _ = control_panel(screen, width)
     ctrl_btn(screen, panel_x + 50, panel_y + 10)
-    
+
 #====================================================================================#
 
 def base():
@@ -68,48 +71,38 @@ def base():
     screen = pg.display.set_mode((width, height), pg.RESIZABLE)
     pg.display.set_caption("8-Puzzle")
 
-    bg = pg.image.load(r'assets\beach5.jpg').convert()
+    bg = pg.image.load(r'assets\beach4.jpg').convert()
     bg = pg.transform.scale(bg, (width, height))
 
-    ipuzzle = Puzzle(screen, x_offset = 80, title = "Initial State")
-    gpuzzle = Puzzle(screen, x_offset = 680, title = "Goal State")
+    ipuzzle = Puzzle(screen, x_offset=80, title="Initial State")
+    gpuzzle = Puzzle(screen, x_offset=680, title="Goal State")
     x_middle = (ipuzzle.x_offset + gpuzzle.x_offset) // 2
-    cpuzzle = Puzzle(screen, x_offset = x_middle, title = "Current State")
+    cpuzzle = Puzzle(screen, x_offset=x_middle, title="Current State")
 
     ipuzzle_nums = set()
     gpuzzle_nums = set()
-    mode = "input"  
-    solution = [
-        [
-            [1, 2, 3],
-            [4, 5, 6],
-            [0, 7, 8]
-        ],
-        [
-            [1, 2, 3],
-            [4, 5, 6],
-            [7, 0, 8]
-        ],
-        [
-            [1, 2, 3],
-            [4, 5, 6],
-            [7, 8, 0]
-        ]
-    ]
+    mode = "input"
+    back_button = Intro_Button("Back", 150, 40, (width - 180, height - 70), 2)
+
+    solution_path = [[
+                [1, 2, 3],
+                [4, 5, 6],
+                [0, 7, 8]
+            ]]
 
     running = True
     while running:
         for event in pg.event.get():
-            if event.type == pg.QUIT or (
-                event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
+            if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 running = False
 
-            if event.type == pg.VIDEORESIZE:
+            elif event.type == pg.VIDEORESIZE:
                 width, height = event.w, event.h
                 screen = pg.display.set_mode((width, height), pg.RESIZABLE)
                 bg = pg.transform.scale(bg, (width, height))
+                back_button = Intro_Button("Back", 150, 40, (width - 180, height - 70), 2)
 
-            if event.type == pg.MOUSEBUTTONDOWN and mode == "input":
+            elif event.type == pg.MOUSEBUTTONDOWN and mode == "input":
                 x, y = pg.mouse.get_pos()
                 if len(ipuzzle_nums) < 9:
                     ipuzzle.handle_click(x, y, ipuzzle_nums)
@@ -121,23 +114,30 @@ def base():
                     print("Initial State:", ipuzzle.state)
                     print("Goal State:", gpuzzle.state)
 
+                    solution_path = DFS(ipuzzle.state, gpuzzle.state)
+                    if solution_path:
+                        print("Tìm được lời giải với số bước:", len(solution_path) - 1)
+                    else:
+                        print("Không tìm thấy lời giải")
+
         screen.blit(bg, (0, 0))
         draw_name(screen)
-        algo_panel(screen, width)
         algo_btn(screen, width)
-        
-        
         control_panel(screen, width)
         control_btn(screen, width)
+
         ipuzzle.draw()
         gpuzzle.draw()
         cpuzzle.draw()
-        
-        # Khởi tạo
-        path_visualizer = PathVisualizer(screen, width, pg.font.SysFont('Monserrat', 24))
 
-        # Trong vòng lặp game hoặc hàm render
-        path_visualizer.draw(solution, 1, True)
+        back_button.draw(screen)
+        if back_button.check_click(None):
+            return "intro"
+        
+        path_visualizer = PathVisualizer(screen, width, pg.font.SysFont('Montserrat', 24))
+
+        if mode == "done" and solution_path:
+            path_visualizer.draw(solution_path, 0, True)
 
         pg.display.flip()
 

@@ -72,13 +72,12 @@ def base():
     ipuzzle1 = BPuzzle(screen, 100, 50, "Initial State")
     ipuzzle2 = BPuzzle(screen, 100, ipuzzle1.y_offset + 260)
     ipuzzle3 = BPuzzle(screen, 100, ipuzzle2.y_offset + 260)
-    gpuzzle = Puzzle(screen, 700, "Goal State")
-    x_middle = (ipuzzle1.x_offset + gpuzzle.x_offset) // 2
-    cpuzzle = BPuzzle(screen, x_offset = x_middle, y_offset = 50, title="Current State")
-
+    gpuzzle1 = Puzzle(screen, 700, "Goal State 1")
+    x_middle = (ipuzzle1.x_offset + gpuzzle1.x_offset) // 2
+    gpuzzle2 = Puzzle(screen, x_offset = x_middle, title="Goal State 2")
 
     gpuzzle_nums = set()
-    cpuzzle.state = [[0 for _ in range(3)] for _ in range(3)]
+    # cpuzzle.state = [[0 for _ in range(3)] for _ in range(3)]
     mode = "input"
 
     random_button_rect = pg.Rect((width - 200, 10), (150, 50))  
@@ -92,15 +91,11 @@ def base():
                 [1, 2, 3],
                 [4, 5, 6],
                 [7, 0, 8]
-            ],
-            [
-                [1, 2, 3],
-                [4, 5, 6],
-                [7, 8, 0]
+                
             ]
         ]
     
-    back_button = Intro_Button("Quay lại", 150, 40, (width - 180, height - 70), 2)
+    back_button = Intro_Button("Back", 150, 40, (width - 180, height - 70), 2)
 
     running = True
     while running:
@@ -113,6 +108,8 @@ def base():
                 width, height = event.w, event.h
                 screen = pg.display.set_mode((width, height), pg.RESIZABLE)
                 bg = pg.transform.scale(bg, (width, height))
+                back_button = Intro_Button("Back", 150, 40, (width - 180, height - 70), 2)
+
 
             if event.type == pg.MOUSEBUTTONDOWN:
                 if random_button_rect.collidepoint(pg.mouse.get_pos()):
@@ -120,18 +117,27 @@ def base():
                     ipuzzle1.state = ipuzzle1.generate_random_state()
                     ipuzzle2.state = ipuzzle2.generate_random_state()
                     ipuzzle3.state = ipuzzle3.generate_random_state()
-                    print("Initial State:", ipuzzle1.state)
-                    print("Goal State:", gpuzzle.state)
                     
-            if event.type == pg.MOUSEBUTTONDOWN and mode == "input":
+                    
+            # if event.type == pg.MOUSEBUTTONDOWN and mode == "input":
+            #     x, y = pg.mouse.get_pos()
+            #     if len(gpuzzle_nums) < 9:
+            #         gpuzzle.handle_click(x, y, gpuzzle_nums)
+            #     elif len(gpuzzle_nums) == 9:
+            #         mode = "done"
+            #         cpuzzle.state = random.choice([ipuzzle1, ipuzzle2, ipuzzle3]).state.copy()
+            #         print("Initial State:", ipuzzle1.state)
+            #         print("Goal State:", gpuzzle.state)
+                        # if event.type == pg.MOUSEBUTTONDOWN and mode == "input":
                 x, y = pg.mouse.get_pos()
                 if len(gpuzzle_nums) < 9:
-                    gpuzzle.handle_click(x, y, gpuzzle_nums)
+                    gpuzzle1.handle_click(x, y, gpuzzle_nums)
+                    gpuzzle2.handle_click(x, y, gpuzzle_nums)
+                    
                 elif len(gpuzzle_nums) == 9:
                     mode = "done"
-                    cpuzzle.state = random.choice([ipuzzle1, ipuzzle2, ipuzzle3]).state.copy()
                     print("Initial State:", ipuzzle1.state)
-                    print("Goal State:", gpuzzle.state)
+                    print("Goal State:", gpuzzle1.state)
 
         screen.blit(bg, (0, 0))
         draw_name(screen)
@@ -147,14 +153,18 @@ def base():
         ipuzzle1.draw()
         ipuzzle2.draw()
         ipuzzle3.draw()
-        cpuzzle.draw()
-        gpuzzle.draw()
+        # cpuzzle.draw()
+        gpuzzle1.draw()
+        gpuzzle2.draw()
         
         
         control_panel(screen, width)
         control_btn(screen, width)
         back_button.draw(screen)
 
+        # Xử lý click
+        if back_button.check_click(None):
+            return "intro"
         # Khởi tạo
         path_visualizer = PathVisualizer(screen, width - 350, pg.font.SysFont('Montserrat', 24), pos_x=400, pos_y=400)
 

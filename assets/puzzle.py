@@ -51,7 +51,6 @@ class Puzzle:
                     text_rect = text.get_rect(center=(x + cell // 2, y + cell // 2))
                     self.screen.blit(text, text_rect)
 
-
     def handle_click(self, x, y, puzzle_nums):
         if self.x_offset <= x < self.x_offset + cell * 3 and 80 <= y < 80 + cell * 3:
             row = (y - 80) // cell
@@ -66,6 +65,54 @@ class Puzzle:
                     puzzle_nums.add(num)
                     return True 
         return False
+    
+    def draw_with_move_highlight(self, highlight=None):
+        base_y = 60  
+
+        outer_rect = pg.Rect(self.x_offset - 10, base_y - 10, cell * 3 + 20, cell * 3 + 20)
+        pg.draw.rect(self.screen, white, outer_rect)
+
+        inner_border = 4
+        inner_rect = pg.Rect(
+            self.x_offset - inner_border,
+            base_y - inner_border,
+            cell * 3 + inner_border * 2,
+            cell * 3 + inner_border * 2
+        )
+        pg.draw.rect(self.screen, blue, inner_rect, 2)
+
+        if self.title:
+            title_text = self.title_font.render(self.title, True, white)
+            title_rect = title_text.get_rect(center=(self.x_offset + (cell * 3) // 2, base_y - 30))
+            self.screen.blit(title_text, title_rect)
+
+        for i in range(3):
+            for j in range(3):
+                x = j * cell + self.x_offset
+                y = i * cell + base_y
+                rect = pg.Rect(x, y, cell, cell)
+
+                # Nền ô
+                pg.draw.rect(self.screen, beige, rect)
+
+                value = self.state[i][j]
+
+                # Nếu ô là 0 (ô trống) tô màu nền khác (xanh lá)
+                if value == 0:
+                    pg.draw.rect(self.screen, (0, 200, 0), rect)  # green
+                else:
+                    # Vẽ viền đỏ nếu highlight trùng ô này (đang di chuyển)
+                    if highlight and highlight == (i, j):
+                        pg.draw.rect(self.screen, (255, 0, 0), rect, 6)  # đỏ dày
+                    else:
+                        # Viền trắng mặc định
+                        pg.draw.rect(self.screen, white, rect, 4)
+
+                # Vẽ số nếu không phải ô trống hoặc None
+                if value not in (None, 0):
+                    text = self.font.render(str(value), True, ebony)
+                    text_rect = text.get_rect(center=(x + cell // 2, y + cell // 2))
+                    self.screen.blit(text, text_rect)
 
 def input_states(ipuzzle, gpuzzle):
     ipuzzle_nums = set()

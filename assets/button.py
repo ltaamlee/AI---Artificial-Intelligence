@@ -1,6 +1,7 @@
 import pygame as pg, sys
-import pygame_gui as pgui
+import time
 from assets.color import *
+from algorithms import *
 #====================================================================================#
 class Intro_Button:
     def __init__(self, text, width, height, pos, shadow):
@@ -57,11 +58,12 @@ class Intro_Button:
 
 #====================================================================================#
 class Algo_Button:
-    def __init__(self, text, width, height, pos, shadow):
+    def __init__(self, text, width, height, pos, shadow, algo_func=None):
         self.pressed = False
         self.shadow = shadow
         self.dynamic_shadow = shadow
         self.y_pos = pos[1]
+
         
         # surface btn
         self.top_rect = pg.Rect(pos, (width, height))
@@ -69,12 +71,16 @@ class Algo_Button:
         
         # text 
         self.text = text
-        self.text_surf = pg.font.SysFont('Montserrat', 25).render(text, True, algo_text)
+        self.text_surf = pg.font.SysFont('Montserrat', 20, bold=True).render(text, True, algo_text)
         self.text_rect = self.text_surf.get_rect(center=self.top_rect.center)
         
         # shadow btn
         self.bottom_rect = pg.Rect(pos, (width, shadow))
         self.bottom_color = SHADOW
+        
+        # algo for btn
+        self.algo_func = algo_func
+        self.solution = None
 
     def draw(self,screen):
         self.top_rect.y = self.y_pos - self.dynamic_shadow
@@ -90,25 +96,28 @@ class Algo_Button:
         pg.draw.rect(screen, self.top_color, self.top_rect, border_radius = 50)
         screen.blit(self.text_surf, self.text_rect)
 
-    def check_click(self, screen):
+    def check_click(self, screen, initial_state=None):
         mouse_pos = pg.mouse.get_pos()
         if self.top_rect.collidepoint(mouse_pos):
             self.top_color = algo_top_click
-            self.text_surf = pg.font.Font(None, 25).render(self.text, True, algo_tex_click)
+            self.text_surf = pg.font.SysFont('Montserrat', 20, bold=True).render(self.text, True, algo_text_click)
 
-            if pg.mouse.get_pressed()[0]:
+            if pg.mouse.get_pressed()[0] and self.top_rect.collidepoint(mouse_pos):
                 self.pressed = True
+                print(self.text)
+                if self.algo_func and initial_state:
+                    self.solution = self.algo_func(initial_state)
+                    print(self.solution)
+                    return self.solution
                 self.dynamic_shadow = 0
             else:
                 self.dynamic_shadow = self.shadow
-                if self.pressed == True:
-                    print('click')
-                    self.pressed = False
+                self.pressed = False
         else:
             self.top_color = algo_color
-            self.text_surf = pg.font.Font(None, 25).render(self.text, True, algo_text)
+            self.text_surf = pg.font.SysFont('Montserrat', 20, bold=True).render(self.text, True, algo_text)
             self.dynamic_shadow = self.shadow
-                       
+                                      
 def uninformed_btn(screen, base_x, base_y):
     buttons = [
         Algo_Button('BFS', 100, 40, (base_x, base_y), 2),
@@ -204,6 +213,7 @@ class Env_Button:
         mouse_pos = pg.mouse.get_pos()
         if self.top_rect.collidepoint(mouse_pos):
             self.top_color = yellow
+            self.text_surf = pg.font.Font(None, 25).render(self.text, True, red)
 
             if pg.mouse.get_pressed()[0]:
                 self.pressed = True
