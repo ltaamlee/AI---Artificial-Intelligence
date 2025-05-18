@@ -96,60 +96,70 @@ class Algo_Button:
         pg.draw.rect(screen, self.top_color, self.top_rect, border_radius = 50)
         screen.blit(self.text_surf, self.text_rect)
 
-    def check_click(self, screen, initial_state=None):
+    def check_click(self, screen, initial_state=None, goal_state=None, callback=None):
         mouse_pos = pg.mouse.get_pos()
+        mouse_pressed = pg.mouse.get_pressed()[0]  # nút chuột trái
         if self.top_rect.collidepoint(mouse_pos):
             self.top_color = algo_top_click
             self.text_surf = pg.font.SysFont('Montserrat', 20, bold=True).render(self.text, True, algo_text_click)
 
-            if pg.mouse.get_pressed()[0] and self.top_rect.collidepoint(mouse_pos):
-                self.pressed = True
-                print(self.text)
-                if self.algo_func and initial_state:
-                    self.solution = self.algo_func(initial_state)
-                    print(self.solution)
-                    return self.solution
+            if mouse_pressed and not self.pressed:
+                self.pressed = True # Tránh lặp
+
+                if self.algo_func and initial_state is not None and goal_state is not None:
+                    self.solution = self.algo_func(initial_state, goal_state)
+                else:
+                    self.solution = None
+
+                if callback:
+                    callback(self.text, self.solution)
+
                 self.dynamic_shadow = 0
-            else:
-                self.dynamic_shadow = self.shadow
+
+            elif not mouse_pressed:
                 self.pressed = False
+                self.dynamic_shadow = self.shadow
+
         else:
+            self.pressed = False
             self.top_color = algo_color
             self.text_surf = pg.font.SysFont('Montserrat', 20, bold=True).render(self.text, True, algo_text)
             self.dynamic_shadow = self.shadow
+
+
                                       
-def uninformed_btn(screen, base_x, base_y):
+def uninformed_btn(screen, base_x, base_y, initial_state=None, goal_state=None, callback=None):
     buttons = [
-        Algo_Button('BFS', 100, 40, (base_x, base_y), 2),
-        Algo_Button('DFS', 100, 40, (base_x, base_y + 60), 2),
-        Algo_Button('UCS', 100, 40, (base_x, base_y + 120), 2),
-        Algo_Button('IDS', 100, 40, (base_x, base_y + 180), 2),
+        Algo_Button('BFS', 100, 40, (base_x, base_y), 2, algo_func=BFS),
+        Algo_Button('DFS', 100, 40, (base_x, base_y + 60), 2, algo_func=DFS),
+        Algo_Button('UCS', 100, 40, (base_x, base_y + 120), 2, algo_func=UCS),
+        Algo_Button('IDS', 100, 40, (base_x, base_y + 180), 2, algo_func=IDS),
     ]
     for btn in buttons:
-        btn.check_click(screen)
+        btn.check_click(screen, initial_state, goal_state, callback)
+        btn.draw(screen)
+
+def informed_btn(screen, base_x, base_y, initial_state=None, goal_state=None, callback=None):
+    buttons = [
+        Algo_Button('GDS', 100, 40, (base_x, base_y), 2, algo_func=GDS),
+        Algo_Button('A*', 100, 40, (base_x, base_y + 60), 2, algo_func=ASTAR),
+        Algo_Button('IDA*', 100, 40, (base_x, base_y + 120), 2, algo_func=IDAS),
+    ]
+    for btn in buttons:
+        btn.check_click(screen, initial_state, goal_state, callback)
         btn.draw(screen)
         
-def informed_btn(screen, base_x, base_y):
+def local_btn(screen, base_x, base_y, initial_state=None, goal_state=None, callback=None):
     buttons = [
-        Algo_Button('GDS', 100, 40, (base_x, base_y), 2),
-        Algo_Button('A*', 100, 40, (base_x, base_y + 60), 2),
-        Algo_Button('IDA*', 100, 40, (base_x, base_y + 120), 2),
+        Algo_Button('SHC', 100, 40, (base_x, base_y), 2, algo_func=SHC),
+        Algo_Button('SAHC', 100, 40, (base_x, base_y + 60), 2, algo_func= SAHC),
+        Algo_Button('STOHC', 100, 40, (base_x, base_y + 120), 2, algo_func=Stochastic),
+        Algo_Button('SA', 100, 40, (base_x, base_y + 180), 2, algo_func=SA),
+        Algo_Button('GA', 100, 40, (base_x + 110, base_y), 2, algo_func=GEN),
+        Algo_Button('BS', 100, 40, (base_x + 110, base_y + 60), 2, algo_func=BS),
     ]
     for btn in buttons:
-        btn.check_click(screen)
-        btn.draw(screen)
-        
-def local_btn(screen, base_x, base_y):
-    buttons = [
-        Algo_Button('SHC', 100, 40, (base_x, base_y), 2),
-        Algo_Button('SAHC', 100, 40, (base_x, base_y + 60), 2),
-        Algo_Button('STOHC', 100, 40, (base_x, base_y + 120), 2),
-        Algo_Button('SA', 100, 40, (base_x, base_y + 180), 2),
-        Algo_Button('GA', 100, 40, (base_x + 110, base_y), 2),
-        Algo_Button('BS', 100, 40, (base_x + 110, base_y + 60), 2),
-    ]
-    for btn in buttons:
-        btn.check_click(screen)
+        btn.check_click(screen, initial_state, goal_state, callback)
         btn.draw(screen)   
     
 def complex_btn(screen, base_x, base_y):
@@ -270,11 +280,12 @@ class Control_Button:
         pg.draw.rect(screen, self.top_color, self.top_rect, border_radius = 50)
         screen.blit(self.icon, self.icon_rect)
 
-    def check_click(self, screen):
+    def check_click(self, screen, callback=None):
         mouse_pos = pg.mouse.get_pos()
+        mouse_pressed = pg.mouse.get_pressed()[0]
         if self.top_rect.collidepoint(mouse_pos):
             self.top_color = yellow
-
+            
             if pg.mouse.get_pressed()[0]:
                 self.pressed = True
                 self.dynamic_shadow = 0
@@ -283,6 +294,20 @@ class Control_Button:
                 if self.pressed:
                     self.pressed = False
                     return True
+        
+
+            if mouse_pressed and not self.pressed:
+                self.pressed = True # Tránh lặp
+
+                if callback:
+                    callback()
+
+                self.dynamic_shadow = 0
+
+            elif not mouse_pressed:
+                self.pressed = False
+                self.dynamic_shadow = self.shadow
+
         else:
             self.top_color = yellow
             self.dynamic_shadow = self.shadow

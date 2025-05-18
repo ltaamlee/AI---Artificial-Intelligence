@@ -12,6 +12,13 @@ class Puzzle:
         self.state = [[None for _ in range(3)] for _ in range(3)]
         self.font = pg.font.SysFont('Montserrat', 30, bold=True)
         self.title_font = pg.font.SysFont('Montserrat', 30, bold=True)
+        
+        self.solution = []          # List các trạng thái 
+        self.current_step = 0       # Bước hiện tại trong solution
+        self.is_playing = False     # Trạng thái đang play
+        self.play_speed = 10         # số frames mỗi bước (để delay)
+
+        self.frame_count = 0
 
     def draw(self, highlight=None):
         base_y = 60  
@@ -114,6 +121,48 @@ class Puzzle:
                     text_rect = text.get_rect(center=(x + cell // 2, y + cell // 2))
                     self.screen.blit(text, text_rect)
 
+    def set_solution(self, solution):
+        self.solution = solution
+        self.current_step = 0
+        if solution:
+            self.state = [row[:] for row in solution[0]]
+        self.is_playing = False
+        self.frame_count = 0
+
+    def next_step(self):
+        if self.solution and self.current_step < len(self.solution) - 1:
+            self.current_step += 1
+            self.state = [row[:] for row in self.solution[self.current_step]]
+
+    def prev_step(self):
+        if self.solution and self.current_step > 0:
+            self.current_step -= 1
+            self.state = [row[:] for row in self.solution[self.current_step]]
+
+    def restart(self):
+        if self.solution:
+            self.current_step = 0
+            self.state = [row[:] for row in self.solution[0]]
+            self.is_playing = False
+            self.frame_count = 0
+
+    def play(self):
+        if self.solution:
+            self.is_playing = True
+
+    def pause(self):
+        self.is_playing = False
+
+    def update(self):
+        if self.is_playing and self.solution:
+            self.frame_count += 1
+            if self.frame_count >= self.play_speed:
+                self.next_step()
+                self.frame_count = 0
+                # Nếu đã chạy đến cuối thì pause
+                if self.current_step == len(self.solution) - 1:
+                    self.pause()
+                    
 def input_states(ipuzzle, gpuzzle):
     ipuzzle_nums = set()
     gpuzzle_nums = set()

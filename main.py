@@ -71,7 +71,7 @@ def intro():
     btn_real_env = Intro_Button('Real Environment', 280, 50, (720, 250), 2)
     btn_complex_env = Intro_Button('Complex Environment', 320, 50, (700, 320), 2)
     btn_csp = Intro_Button('Constraint Satisfaction Problem', 500, 50, (620, 390), 2)
-    # btn_rl = Intro_Button('Reinforcement Learning', 460, 50, (650, 460), 2)
+    btn_rl = Intro_Button('Reinforcement Learning', 460, 50, (650, 460), 2)
     btn_quit = Intro_Button('Quit', 150, 50, (100, height - 80), 2)
 
     running = True
@@ -94,7 +94,7 @@ def intro():
         btn_real_env.draw(screen)
         btn_complex_env.draw(screen)
         btn_csp.draw(screen)
-        # btn_rl.draw(screen)
+        btn_rl.draw(screen)
         btn_quit.draw(screen)
 
         # Kiểm tra click

@@ -66,8 +66,9 @@ class PathVisualizer:
             if i == 0:
                 label = "S"
             else:
-                moved_val = self.get_moved_value(solution[i - 1], solution[i])
-                label = str(moved_val) if moved_val is not None else "?"
+                # moved_val = self.get_moved_value(solution[i - 1], solution[i])
+                # label = str(moved_val) if moved_val is not None else "?"
+                label = str(i)
 
             text = self.font.render(label, True, black)
             self.screen.blit(text, (x + self.step_size // 2 - text.get_width() // 2, y - text.get_height() // 2))
@@ -86,3 +87,4 @@ class PathVisualizer:
                 move_dir = self.get_move_direction(solution[i], solution[i + 1])
                 dir_text = self.font.render(move_dir, True, black)
                 self.screen.blit(dir_text, ((arrow_start[0] + arrow_end[0]) // 2 - dir_text.get_width() // 2, y + 12))
+            

@@ -29,15 +29,16 @@ def algo_panel(screen, width, height=None):
 
     return panel_x, panel_y, panel_width, panel_height
 
-def algo_btn(screen, width):
+def algo_btn(screen, width, ip1, ip2, ip3):
     panel_x, panel_y, panel_width, panel_height = algo_panel(screen, width)
 
-    uninformed_btn(screen, panel_x + 30, panel_y + 20)
-    informed_btn(screen, panel_x + 170, panel_y + 20)
-    local_btn(screen, panel_x + 310, panel_y + 20)
-    complex_btn(screen, panel_x + 540, panel_y + 20)
-    csp_btn(screen, panel_x + 670, panel_y + 20)
-    rl_btn(screen, panel_x + 800, panel_y + 20)
+    uninformed_btn(screen, panel_x + 30, panel_y + 20, lambda: handle_algo_click("Uninformed", ip1.state, ip2.state, ip3.state))
+    informed_btn(screen, panel_x + 170, panel_y + 20, lambda: handle_algo_click("Informed", ip1.state, ip2.state, ip3.state))
+    local_btn(screen, panel_x + 310, panel_y + 20)#, lambda: handle_algo_click("Local", ip1.state, ip2.state, ip3.state))
+    complex_btn(screen, panel_x + 540, panel_y + 20) #lambda: handle_algo_click("Complex", ip1.state, ip2.state, ip3.state))
+    csp_btn(screen, panel_x + 670, panel_y + 20)#, lambda: handle_algo_click("CSP", ip1.state, ip2.state, ip3.state))
+    rl_btn(screen, panel_x + 800, panel_y + 20)#, lambda: handle_algo_click("RL", ip1.state, ip2.state, ip3.state))
+
 #====================================================================================#
 
 def control_panel(screen, width, hegiht=None):
@@ -55,7 +56,18 @@ def control_panel(screen, width, hegiht=None):
 def control_btn(screen, width):
     panel_x, panel_y, panel_width, panel_height = control_panel(screen, width)
     ctrl_btn(screen, panel_x + 50, panel_y + 10)
+      
+def handle_algo_click(algo_name, state1, state2, state3, solution=None):
+    print(f"Đã chọn thuật toán: {algo_name}")
+    print("Trạng thái 1:", state1)
+    print("Trạng thái 2:", state2)
+    print("Trạng thái 3:", state3)
     
+    if solution:
+        print("Giải thuật trả về:", solution)
+    
+    # TODO: gọi giải thuật tương ứng tại đây
+
 #====================================================================================#
 def base():
     pg.init()
@@ -72,11 +84,12 @@ def base():
     ipuzzle1 = BPuzzle(screen, 100, 50, "Initial State")
     ipuzzle2 = BPuzzle(screen, 100, ipuzzle1.y_offset + 260)
     ipuzzle3 = BPuzzle(screen, 100, ipuzzle2.y_offset + 260)
-    gpuzzle1 = Puzzle(screen, 700, "Goal State 1")
-    x_middle = (ipuzzle1.x_offset + gpuzzle1.x_offset) // 2
-    gpuzzle2 = Puzzle(screen, x_offset = x_middle, title="Goal State 2")
+    gpuzzle2 = Puzzle(screen, 700, "Goal State 2")
+    x_middle = (ipuzzle1.x_offset + gpuzzle2.x_offset) // 2
+    gpuzzle1 = Puzzle(screen, x_offset = x_middle, title="Goal State 1")
 
-    gpuzzle_nums = set()
+    gpuzzle1_nums = set()
+    gpuzzle2_nums = set()
     # cpuzzle.state = [[0 for _ in range(3)] for _ in range(3)]
     mode = "input"
 
@@ -130,19 +143,23 @@ def base():
             #         print("Goal State:", gpuzzle.state)
                         # if event.type == pg.MOUSEBUTTONDOWN and mode == "input":
                 x, y = pg.mouse.get_pos()
-                if len(gpuzzle_nums) < 9:
-                    gpuzzle1.handle_click(x, y, gpuzzle_nums)
-                    gpuzzle2.handle_click(x, y, gpuzzle_nums)
+                if len(gpuzzle1_nums) < 9:
+                    gpuzzle1.handle_click(x, y, gpuzzle1_nums)
+                elif len(gpuzzle2_nums) < 9:
+                    gpuzzle2.handle_click(x, y, gpuzzle2_nums)
                     
-                elif len(gpuzzle_nums) == 9:
+                elif len(gpuzzle1_nums) == 9 and len(gpuzzle2_nums) == 9:
                     mode = "done"
-                    print("Initial State:", ipuzzle1.state)
-                    print("Goal State:", gpuzzle1.state)
+                    print("Initial State:", type(ipuzzle1.state))
+                    print("Goal State:", type(gpuzzle1.state))
+
+
 
         screen.blit(bg, (0, 0))
         draw_name(screen)
         algo_panel(screen, width)
-        algo_btn(screen, width)
+        algo_btn(screen, width, ipuzzle1, ipuzzle2, ipuzzle3)
+
 
         # Draw the random button
         pg.draw.rect(screen, (0, 255, 0), random_button_rect)  # Button background (green)
