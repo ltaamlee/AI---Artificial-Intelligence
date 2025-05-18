@@ -54,6 +54,18 @@ def control_panel(screen, width, height=None):
     pg.draw.rect(panel, color_algo_panel, (0, 0, panel_width, panel_height), border_radius=50)
     screen.blit(panel, (panel_x, panel_y))
 
+    font = pg.font.SysFont('Montserrat', 26, bold=True)
+    info_lines = [
+        "ID: 23110312",
+        "Name: Lê Thị Thanh Tâm",
+        "ARIN330585_04",
+        "Mentor: Phan Thị Huyền Trang"
+    ]
+    
+    for i, line in enumerate(info_lines):
+        text = font.render(line, True, white)
+        screen.blit(text, (1050, 100 + i * 50))
+        
     return panel_x, panel_y, panel_width, panel_height
 
 def control_btn(screen, width):

@@ -121,11 +121,10 @@ Transition Model: Cập nhật các ràng buộc và loại bỏ các giá trị
 
 
 ## 2.6. Reinforcement Learning
-Học qua tương tác trực tiếp với môi trường, không cần biết trước mô hình chuyển đổi trạng thái.
-- **Agent**: Thực thể ra quyết định, chọn hành động.
-- **Environment**: Môi trường mà agent tương tác.
-- **State**: Mô tả tình trạng hiện tại của môi trường.
-- **Action**: Hành động agent thực hiện để thay đổi trạng thái.
-- **Reward**: Phản hồi ngay sau hành động, dùng để đánh giá hành động đó tốt hay xấu bằng cách cung cấp giá trị số (positive hoặc negative) thể hiện mức độ thành công hoặc thất bại của hành động đó.
-Mục tiêu của agent là tối đa hóa tổng phần thưởng nhận được theo thời gian.
+
+- **Agent**: 
+- **Environment**: 
+- **State**: 
+- **Action**: 
+- **Reward**: 
 
