@@ -27,15 +27,7 @@ class PathVisualizer:
         return None
 
 
-    def draw_box(self):
-                # Vẽ khung ngoài (luôn luôn vẽ)
-        pg.draw.rect(self.screen, baby_blue, self.path_box, border_radius=50)
-        pg.draw.rect(self.screen, blue, self.path_box, 2, border_radius=50)
-
-        # Vẽ tiêu đề
-        title = self.title_font.render("Solution Path:", True, white)
-        self.screen.blit(title, (self.path_box.x + 10, self.path_box.y - 50))
-        
+       
     def draw(self, solution, current_step, selected_button):
         # Vẽ khung ngoài (luôn luôn vẽ)
         pg.draw.rect(self.screen, baby_blue, self.path_box, border_radius=50)
@@ -45,10 +37,17 @@ class PathVisualizer:
         title = self.title_font.render("Solution Path:", True, white)
         self.screen.blit(title, (self.path_box.x + 10, self.path_box.y - 50))
 
+        if selected_button and solution and len(solution) > 1:
+            step_count_text = self.font.render(f"Total steps: {len(solution) - 1}", True, white)
+        else:
+            step_count_text = self.font.render(f"Total steps: 0", True, white)
+
+            
+
         # Nếu không có lời giải hoặc chưa chọn thuật toán, KHÔNG vẽ các bước
         if not selected_button or not solution or len(solution) <= 1:
             return
-
+        self.screen.blit(step_count_text, (self.path_box.x + self.path_box_width - step_count_text.get_width() - 10, self.path_box.y - 50))
         # Tiếp tục vẽ các bước như cũ
         visible_steps = min(self.path_box_width // self.step_size - 1, len(solution) - 1)
         start_idx = max(0, min(current_step - visible_steps // 2, len(solution) - visible_steps - 1))

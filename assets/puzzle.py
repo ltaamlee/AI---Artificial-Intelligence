@@ -145,11 +145,19 @@ class Puzzle:
             self.state = [row[:] for row in self.solution[0]]
             self.is_playing = False
             self.frame_count = 0
+            
+    def reset(self):
+        self.state = [[None for _ in range(3)] for _ in range(3)]
+        self.solution = []
+        self.current_step = 0
+        self.is_playing = False
+        def play(self):
+            if self.solution:
+                self.is_playing = True
 
     def play(self):
-        if self.solution:
-            self.is_playing = True
-
+        self.is_playing = True
+        
     def pause(self):
         self.is_playing = False
 

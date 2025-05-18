@@ -511,3 +511,52 @@ def GEN(start_state, goal_state):
     return GA(start_state, goal_state)
 
 #====================================================================================#
+def generate_neighbors_andor(state):
+    neighbors = []
+    x, y = None, None
+    for i in range(3):
+        for j in range(3):
+            if state[i][j] == 0:
+                x, y = i, j
+                break
+    moves = {'Up': (x-1, y), 'Down': (x+1, y), 'Left': (x, y-1), 'Right': (x, y+1)}
+    for action, (nx, ny) in moves.items():
+        if 0 <= nx < 3 and 0 <= ny < 3:
+            new_state = [list(row) for row in state]
+            new_state[x][y], new_state[nx][ny] = new_state[nx][ny], new_state[x][y]
+            neighbors.append((action, new_state))
+    return neighbors
+
+def get_successors(state):
+    neighbors = []
+    for action, new_state in generate_neighbors_andor(state):
+        neighbors.append((action, [new_state]))
+    return neighbors
+
+def ANDOR(start_state, goal_state, max_depth=30):
+    def goal_test(state):
+        return state == goal_state
+
+    def OR_Search(state, path, depth):
+        if goal_test(state):
+            return [state]
+        if depth > max_depth:
+            return None
+        state_t = state_to_tuple(state)
+        if state_t in path:
+            return None
+        for action, results in get_successors(state):
+            plan = AND_Search(results, path | {state_t}, depth + 1)
+            if plan is not None:
+                return [state] + plan
+        return None
+
+    def AND_Search(states, path, depth):
+        for s in states:
+            plan = OR_Search(s, path, depth)
+            if plan is None:
+                return None
+        return plan
+
+    return OR_Search(start_state, set(), 0)
+

@@ -106,13 +106,22 @@ class Algo_Button:
             if mouse_pressed and not self.pressed:
                 self.pressed = True # Tránh lặp
 
+                start = time.perf_counter()
+
+                
                 if self.algo_func and initial_state is not None and goal_state is not None:
                     self.solution = self.algo_func(initial_state, goal_state)
                 else:
                     self.solution = None
-
+                end = time.perf_counter()
+                elapsed = end - start
+                
+                
+                global algo_exec_time
+                algo_exec_time = elapsed
+                
                 if callback:
-                    callback(self.text, self.solution)
+                    callback(self.text, self.solution, elapsed)
 
                 self.dynamic_shadow = 0
 
@@ -162,9 +171,9 @@ def local_btn(screen, base_x, base_y, initial_state=None, goal_state=None, callb
         btn.check_click(screen, initial_state, goal_state, callback)
         btn.draw(screen)   
     
-def complex_btn(screen, base_x, base_y):
-    btn = Algo_Button('AND-OR', 100, 40, (base_x, base_y), 2)
-    btn.check_click(screen)
+def complex_btn(screen, base_x, base_y, initial_state=None, goal_state=None, callback=None):
+    btn = Algo_Button('AND-OR', 100, 40, (base_x, base_y), 2, algo_func=ANDOR)
+    btn.check_click(screen, initial_state, goal_state, callback)
     btn.draw(screen) 
     
 #Constraint Satisfaction Problem
@@ -280,12 +289,11 @@ class Control_Button:
         pg.draw.rect(screen, self.top_color, self.top_rect, border_radius = 50)
         screen.blit(self.icon, self.icon_rect)
 
-    def check_click(self, screen, callback=None):
+    def check_click(self, screen):
         mouse_pos = pg.mouse.get_pos()
-        mouse_pressed = pg.mouse.get_pressed()[0]
         if self.top_rect.collidepoint(mouse_pos):
             self.top_color = yellow
-            
+
             if pg.mouse.get_pressed()[0]:
                 self.pressed = True
                 self.dynamic_shadow = 0
@@ -294,32 +302,20 @@ class Control_Button:
                 if self.pressed:
                     self.pressed = False
                     return True
-        
-
-            if mouse_pressed and not self.pressed:
-                self.pressed = True # Tránh lặp
-
-                if callback:
-                    callback()
-
-                self.dynamic_shadow = 0
-
-            elif not mouse_pressed:
-                self.pressed = False
-                self.dynamic_shadow = self.shadow
-
         else:
             self.top_color = yellow
             self.dynamic_shadow = self.shadow
 
-def ctrl_btn(screen, base_x, base_y):
-    buttons = [
-        Control_Button('./assets/prev.png', 50, 50, (base_x, 300), 2),
-        Control_Button('./assets/play.png', 50, 50, (base_x + 80, 300), 2),
-        Control_Button('./assets/pause.png', 50, 50, (base_x + 160, 300), 2),
-        Control_Button('./assets/next.png', 50, 50, (base_x + 240, 300), 2),
-        Control_Button('./assets/restart.png', 50, 50, (base_x + 320, 300), 2),
-    ]
-    for btn in buttons:
-        btn.check_click(screen)
-        btn.draw(screen)
+
+# def ctrl_btn(screen, base_x, base_y):
+#     btn_prev = Control_Button('./assets/prev.png', 50, 50, (base_x, 300), 2)
+#     btn_play = Control_Button('./assets/play.png', 50, 50, (base_x + 80, 300), 2)
+#     btn_pause = Control_Button('./assets/pause.png', 50, 50, (base_x + 160, 300), 2)
+#     btn_next = Control_Button('./assets/next.png', 50, 50, (base_x + 240, 300), 2)
+#     btn_restart = Control_Button('./assets/restart.png', 50, 50, (base_x + 320, 300), 2)
+
+#     buttons = [btn_prev, btn_play, btn_pause, btn_next, btn_restart]
+#     for btn in buttons:
+#         btn.draw(screen)
+
+#     return btn_prev, btn_play, btn_pause, btn_next, btn_restart

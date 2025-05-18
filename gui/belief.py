@@ -1,7 +1,7 @@
 import random
 import pygame as pg
 import pygame_gui as pgui
-from assets.button import uninformed_btn, informed_btn, local_btn, complex_btn, csp_btn, rl_btn, ctrl_btn, Intro_Button
+from assets.button import uninformed_btn, informed_btn, local_btn, complex_btn, csp_btn, rl_btn, Control_Button, Intro_Button
 from assets.color import *
 from assets.puzzle import Puzzle, BPuzzle
 from assets.path import PathVisualizer
@@ -55,7 +55,6 @@ def control_panel(screen, width, hegiht=None):
 
 def control_btn(screen, width):
     panel_x, panel_y, panel_width, panel_height = control_panel(screen, width)
-    ctrl_btn(screen, panel_x + 50, panel_y + 10)
       
 def handle_algo_click(algo_name, state1, state2, state3, solution=None):
     print(f"Đã chọn thuật toán: {algo_name}")
@@ -71,7 +70,6 @@ def handle_algo_click(algo_name, state1, state2, state3, solution=None):
 #====================================================================================#
 def base():
     pg.init()
-    load_music()
 
     width = pg.display.Info().current_w
     height = pg.display.Info().current_h
@@ -109,7 +107,22 @@ def base():
         ]
     
     back_button = Intro_Button("Back", 150, 40, (width - 180, height - 70), 2)
+    clock = pg.time.Clock()
+    path_visualizer = PathVisualizer(screen, width, pg.font.SysFont('Montserrat', 24))
 
+
+    btn_prev = Control_Button('./assets/prev.png', 50, 50, (1050, 300), 2)
+    btn_play = Control_Button('./assets/play.png', 50, 50, (1130, 300), 2)
+    btn_pause = Control_Button('./assets/pause.png', 50, 50, (1210, 300), 2)
+    btn_next = Control_Button('./assets/next.png', 50, 50, (1290, 300), 2)
+    btn_restart = Control_Button('./assets/restart.png', 50, 50, (1370, 300), 2)
+
+    buttons = [btn_prev, btn_play, btn_pause, btn_next, btn_restart]
+
+            
+    last_update_time = pg.time.get_ticks()
+    update_interval = 1000
+    algo_exec_time = None 
     running = True
     while running:
         for event in pg.event.get():
@@ -179,6 +192,26 @@ def base():
         control_btn(screen, width)
         back_button.draw(screen)
 
+
+
+        for btn in buttons:
+            btn.draw(screen)
+
+        # Xử lý sự kiện click nút điều khiển
+        if btn_prev.check_click(screen):...
+
+
+        if btn_next.check_click(screen):...
+
+
+        if btn_play.check_click(screen):...
+ 
+
+        if btn_pause.check_click(screen):...
+           
+
+        if btn_restart.check_click(screen):...
+   
         # Xử lý click
         if back_button.check_click(None):
             return "intro"

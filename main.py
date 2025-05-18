@@ -55,8 +55,7 @@ def intro_panel(screen, width, height=None):
 
 def intro():
     pg.init()
-     
-    load_music()
+
     
     width = 1200
     height = 600
