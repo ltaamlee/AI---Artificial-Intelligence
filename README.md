@@ -523,3 +523,5 @@ Thông qua quá trình triển khai và so sánh 20 thuật toán tìm kiếm á
 [2]. Từ Minh Phương, Giáo trình Nhập môn Trí tuệ nhân tạo, Học viện Bưu chính viễn thông, 2014.
 
 [3]. Russell, S. J., & Norvig, P. (2021), Artificial intelligence: A modern approach (4th ed.), Pearson.
+
+Link Youtube bài báo cáo: ![BC](https://youtu.be/C6kqDixxROk)
