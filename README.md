@@ -494,7 +494,7 @@ Nếu một biến không còn giá trị hợp lệ nào → backtrack sớm.
     3. Sau khi huấn luyện: chọn hành động theo Q-table để giải.
 
 <p align="center">
-  <img src="https://github.com/ltaamlee/AI-Artificial-Intelligence/raw/main/assets/gif/qlearning.gif" alt="Demo 8-Puzzle" width="1000"/>
+  <img src="https://github.com/ltaamlee/AI-Artificial-Intelligence/raw/main/assets/gif/qlearning.gif" alt="Demo 8-Puzzle" width="600"/>
 </p>
 
 ## 3. Kết luận
