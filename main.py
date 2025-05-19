@@ -101,10 +101,13 @@ def intro():
             from gui.real import base
             base()
         elif btn_complex_env.check_click(None):
-            from gui.belief import base
+            from gui.belief2 import base
             base()
         elif btn_csp.check_click(None):
             from gui.csp import base
+            base()
+        elif btn_rl.check_click(None):
+            from gui.qlearning import base
             base()
         elif btn_quit.check_click(None):
             running = False
