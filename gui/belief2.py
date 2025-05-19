@@ -2,16 +2,15 @@ import tkinter as tk
 import random
 import time
 from collections import deque
-from algorithms import BFS, DFS, UCS, IDS, GDS, ASTAR, IDAS, SHC, SAHC, Stochastic, SA, BS, GEN, ANDOR
+from algorithms import *
 
 class EightPuzzleApp:
     def __init__(self, root):
         self.root = root
         self.root.title("8-Puzzle Solver")
         self.root.geometry("1000x700")
-        self.root.minsize(1000, 700)  # Set minimum window size
+        self.root.minsize(1000, 700)  
 
-        # Main container with two columns: left for input, right for solution viewer
         main_container = tk.Frame(self.root)
         main_container.pack(fill="both", expand=True)
 
@@ -21,11 +20,10 @@ class EightPuzzleApp:
         main_container.rowconfigure(0, weight=1)
 
         # Left scrollable canvas for input and controls - with fixed width
-        left_container = tk.Frame(main_container, width=500)  # Fixed width to ensure equal space
+        left_container = tk.Frame(main_container, width=500)  
         left_container.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
-        left_container.grid_propagate(False)  # Prevent resizing based on content
+        left_container.grid_propagate(False)  
 
-        # Create canvas with both vertical and horizontal scrollbars
         canvas_frame = tk.Frame(left_container)
         canvas_frame.pack(fill="both", expand=True)
         
@@ -48,15 +46,12 @@ class EightPuzzleApp:
         x_scrollbar.pack(side="bottom", fill="x")
         canvas.pack(side="left", fill="both", expand=True)
         
-        # Bind mousewheel for vertical scrolling
         self.root.bind_all("<MouseWheel>", lambda e: canvas.yview_scroll(int(-1 * (e.delta / 120)), "units"))
-        # Bind Shift+MouseWheel for horizontal scrolling on Windows
         self.root.bind_all("<Shift-MouseWheel>", lambda e: canvas.xview_scroll(int(-1 * (e.delta / 120)), "units"))
 
-        # Right frame for solution viewer - same width as left side
         self.result_frame = tk.LabelFrame(main_container, text="Solution Viewer", padx=10, pady=10, width=500)
         self.result_frame.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
-        self.result_frame.grid_propagate(False)  # Prevent resizing based on content
+        self.result_frame.grid_propagate(False)  
 
         self.mode = tk.StringVar(value="Non-Observe")
         self.initial_states = []
@@ -171,7 +166,6 @@ class EightPuzzleApp:
         layout_frame = tk.Frame(self.input_frame)
         layout_frame.pack(fill="x")
         if self.mode.get() == "Non-Observe":
-            # Create a canvas for horizontally scrollable entries if needed
             entry_canvas = tk.Frame(layout_frame)
             entry_canvas.pack(fill="x")
             
@@ -220,7 +214,6 @@ class EightPuzzleApp:
         self.initial_canvases = []
         self.goal_canvases = []
 
-        # Create a canvas container for horizontal scrolling if needed
         initial_container = tk.Frame(self.initial_frame)
         initial_container.pack(fill="x")
         
@@ -254,7 +247,6 @@ class EightPuzzleApp:
 
     def draw_state(self, canvas, state, partial=False):
         canvas.delete("all")
-        # Adjust tile size based on canvas size
         if canvas == self.result_canvas:
             canvas_width = canvas.winfo_width() or 320
             canvas_height = canvas.winfo_height() or 320

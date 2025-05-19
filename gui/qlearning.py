@@ -1,9 +1,8 @@
-# File: qlearning_8puzzle_gui.py
-
 import tkinter as tk
 from tkinter import messagebox, font
 import random
 from copy import deepcopy
+#====================================================================================#
 
 ACTIONS = [0, 1, 2, 3]  # 0: Up, 1: Down, 2: Left, 3: Right
 GOAL = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
@@ -100,7 +99,8 @@ def solve(state, q_table):
         state = next_state
     return None
 
-# ----------------- GUI ------------------
+#====================================================================================#
+
 class PuzzleUI:
     def __init__(self, master):
         self.master = master
