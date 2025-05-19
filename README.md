@@ -524,4 +524,4 @@ Thông qua quá trình triển khai và so sánh 20 thuật toán tìm kiếm á
 
 [3]. Russell, S. J., & Norvig, P. (2021), Artificial intelligence: A modern approach (4th ed.), Pearson.
 
-Link Youtube bài báo cáo: ![BC](https://youtu.be/C6kqDixxROk)
+Link Youtube bài báo cáo: [LTaam Báo Cáo Cuối Kỳ](https://youtu.be/C6kqDixxROk)
