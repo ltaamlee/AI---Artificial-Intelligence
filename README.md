@@ -442,7 +442,7 @@ Nếu một biến không còn giá trị hợp lệ nào → backtrack sớm.
 - Vì gán giá trị cho 9 biến cùng 1 lúc nên khả năng tìm được lời giải khá thấp
 
 <p align="center">
-  <img src="https://github.com/ltaamlee/AI-Artificial-Intelligence/raw/main/assets/gif/check.gif" alt="Demo 8-Puzzle" width="500"/>
+  <img src="https://github.com/ltaamlee/AI-Artificial-Intelligence/raw/main/assets/gif/check.gif" alt="Demo 8-Puzzle" width="400"/>
 </p>
 
 ### 2.5.2. Backtracking
@@ -452,7 +452,7 @@ Nếu một biến không còn giá trị hợp lệ nào → backtrack sớm.
 - Hiệu quả với AC3 hoặc Forward Checking kết hợp.
 
 <p align="center">
-  <img src="https://github.com/ltaamlee/AI-Artificial-Intelligence/raw/main/assets/gif/backtrack.gif" alt="Demo 8-Puzzle" width="500"/>
+  <img src="https://github.com/ltaamlee/AI-Artificial-Intelligence/raw/main/assets/gif/backtrack.gif" alt="Demo 8-Puzzle" width="400"/>
 </p>
 
 ### 2.5.3. AC-3
@@ -461,7 +461,7 @@ Nếu một biến không còn giá trị hợp lệ nào → backtrack sớm.
 - Giảm không gian tìm kiếm trước khi chạy Backtracking.
 
 <p align="center">
-  <img src="https://github.com/ltaamlee/AI-Artificial-Intelligence/raw/main/assets/gif/bta3.gif" alt="Demo 8-Puzzle" width="500"/>
+  <img src="https://github.com/ltaamlee/AI-Artificial-Intelligence/raw/main/assets/gif/btac3.gif" alt="Demo 8-Puzzle" width="400"/>
 </p>
 
 ## 2.6. Reinforcement Learning
@@ -494,7 +494,7 @@ Nếu một biến không còn giá trị hợp lệ nào → backtrack sớm.
     3. Sau khi huấn luyện: chọn hành động theo Q-table để giải.
 
 <p align="center">
-  <img src="https://github.com/ltaamlee/AI-Artificial-Intelligence/raw/main/assets/gif/qlearning.gif" alt="Demo 8-Puzzle" width="600"/>
+  <img src="https://github.com/ltaamlee/AI-Artificial-Intelligence/raw/main/assets/gif/qlearning.gif" alt="Demo 8-Puzzle" width="400"/>
 </p>
 
 ## 3. Kết luận
@@ -523,4 +523,3 @@ Thông qua quá trình triển khai và so sánh 20 thuật toán tìm kiếm á
 [2]. Từ Minh Phương, Giáo trình Nhập môn Trí tuệ nhân tạo, Học viện Bưu chính viễn thông, 2014.
 
 [3]. Russell, S. J., & Norvig, P. (2021), Artificial intelligence: A modern approach (4th ed.), Pearson.
-
