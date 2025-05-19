@@ -225,7 +225,7 @@ Chiến lược tìm kiếm có thông tin (Informed search) hay còn
 
 ### 2.2.4. So sánh hiệu suất
 <p align="center">
-  <img src="https://github.com/ltaamlee/AI-Artificial-Intelligence/raw/main/assets/is-chart.gif" alt="Demo 8-Puzzle" width="1000"/>
+  <img src="https://github.com/ltaamlee/AI-Artificial-Intelligence/raw/main/assets/is-chart.png" alt="Demo 8-Puzzle" width="1000"/>
 </p>
 
 - A* là thuật giải hiệu quả nhất, đảm bảo tìm được lời giải tối ưu nếu heuristic phù hợp.
@@ -368,9 +368,8 @@ Local Search (Tìm kiếm cục bộ) là phương pháp tìm kiếm dựa trên
 </p>
 
 ### 2.3.7. So sánh hiệu suất
-
 <p align="center">
-  <img src="https://github.com/ltaamlee/AI-Artificial-Intelligence/raw/main/assets/local-chart.gif" alt="Demo 8-Puzzle" width="1000"/>
+  <img src="https://github.com/ltaamlee/AI-Artificial-Intelligence/raw/main/assets/local-chart.png" alt="Demo 8-Puzzle" width="1000"/>
 </p>
 
 - SHC : Thường gặp Local Maximum do trạng thái ban đầu quá phức tạp
@@ -410,7 +409,7 @@ Tìm kiếm trong môi trường phức tạp là một lĩnh vực quan trọng
 </p>
 
 
-### 2.4.3. AND-OR Graph Search
+### 2.4.3. AND-OR Search
 AND-OR Graph Search là một kỹ thuật tìm kiếm đặc biệt được sử dụng trong các môi trường không chắc chắn hoặc có nhiều kết quả có khả quan cho mỗi hành động. Khác với các thuật toán tìm kiếm khác chỉ quan tâm đến một chuỗi hành động đơn lẻ, thuật toán  xử lý nhiều trường hợp có thể xảy ra ở mỗi bước đi.
 
 Node `OR`: Đại diện cho điểm ra quyết định – chọn một trong các hành động có thể dẫn đến thành công.
