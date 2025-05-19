@@ -346,7 +346,7 @@ class PuzzleUI:
         self.update_button_states()
 
     def update_button_states(self):
-        """Cập nhật trạng thái của các nút Prev và Next dựa trên lịch sử và bước hiện tại."""
+        """Cập nhật trạng thái"""
         if not self.history:
             self.btn_prev.config(state=tk.DISABLED)
             self.btn_next.config(state=tk.DISABLED)
