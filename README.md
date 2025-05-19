@@ -461,7 +461,7 @@ Nếu một biến không còn giá trị hợp lệ nào → backtrack sớm.
 - Giảm không gian tìm kiếm trước khi chạy Backtracking.
 
 <p align="center">
-  <img src="https://github.com/ltaamlee/AI-Artificial-Intelligence/raw/main/assets/gif/bta3.gif" alt="Demo 8-Puzzle" width="500"/>
+  <img src="https://github.com/ltaamlee/AI-Artificial-Intelligence/raw/main/assets/gif/btac3.gif" alt="Demo 8-Puzzle" width="400"/>
 </p>
 
 ## 2.6. Reinforcement Learning
